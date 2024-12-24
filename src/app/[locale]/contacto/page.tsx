@@ -17,41 +17,24 @@ import {
   FaTiktok
 } from 'react-icons/fa'
 
-interface ProfileCardProps {
-  name: string
-  title: string
-  bio: string
-  stats: {
-    eventos: number
-    platos: number
-    clientes: number
-  }
-  avatar: string
-  socialLinks: {
-    instagram?: string
-    whatsapp?: string
-    facebook?: string
-    tiktok?: string
-  }
-}
-
-const ContactoCard: React.FC<ProfileCardProps> = ({
-  name = 'Gustavo Urban',
-  title = 'Chef para Eventos',
-  bio = 'Chef apasionado especializado en crear experiencias culinarias inolvidables para eventos especiales. ¡Conectemos y hagamos que tu ocasión sea extraordinaria!',
-  stats = {
+const ContactoCard: React.FC = () => {
+  const name = 'Gustavo Urban'
+  const title = 'Chef para Eventos'
+  const bio =
+    'Chef apasionado especializado en crear experiencias culinarias inolvidables para eventos especiales. ¡Conectemos y hagamos que tu ocasión sea extraordinaria!'
+  const stats = {
     eventos: 45,
     platos: 120,
     clientes: 300
-  },
-  avatar = '/image/profile.jpeg',
-  socialLinks = {
+  }
+  const avatar = '/image/profile.jpeg'
+  const socialLinks = {
     instagram: 'https://instagram.com',
     whatsapp: 'https://whatsapp.com',
     facebook: 'https://facebook.com',
     tiktok: 'https://www.tiktok.com/@urban_bite_pizzas'
   }
-}) => {
+
   const socialIcons = [
     { icon: FaFacebook, link: socialLinks.facebook },
     { icon: FaInstagram, link: socialLinks.instagram },
