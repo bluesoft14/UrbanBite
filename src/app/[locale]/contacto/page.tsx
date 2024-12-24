@@ -35,7 +35,7 @@ interface ProfileCardProps {
   }
 }
 
-export default function ContactoCard({
+const ContactoCard: React.FC<ProfileCardProps> = ({
   name = 'Gustavo Urban',
   title = 'Chef para Eventos',
   bio = 'Chef apasionado especializado en crear experiencias culinarias inolvidables para eventos especiales. ¡Conectemos y hagamos que tu ocasión sea extraordinaria!',
@@ -47,12 +47,11 @@ export default function ContactoCard({
   avatar = '/image/profile.jpeg',
   socialLinks = {
     instagram: 'https://instagram.com',
-
     whatsapp: 'https://whatsapp.com',
     facebook: 'https://facebook.com',
     tiktok: 'https://www.tiktok.com/@urban_bite_pizzas'
   }
-}: ProfileCardProps) {
+}) => {
   const socialIcons = [
     { icon: FaFacebook, link: socialLinks.facebook },
     { icon: FaInstagram, link: socialLinks.instagram },
@@ -155,3 +154,5 @@ export default function ContactoCard({
     </div>
   )
 }
+
+export default ContactoCard
