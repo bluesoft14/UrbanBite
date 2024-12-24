@@ -39,7 +39,13 @@ const popularItems = [
   }
 ]
 
-function HangingNeonSign({ onClick, isAuthenticated }) {
+function HangingNeonSign({
+  onClick,
+  isAuthenticated
+}: {
+  onClick: () => void
+  isAuthenticated: boolean
+}) {
   const [isOpen, setIsOpen] = useState(true)
   const [isFlickering, setIsFlickering] = useState(false)
 
