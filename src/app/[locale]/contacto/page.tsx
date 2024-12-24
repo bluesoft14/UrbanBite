@@ -22,9 +22,9 @@ interface ProfileCardProps {
   title: string
   bio: string
   stats: {
-    posts: number
-    followers: number
-    following: number
+    eventos: number
+    platos: number
+    clientes: number
   }
   avatar: string
   socialLinks: {
