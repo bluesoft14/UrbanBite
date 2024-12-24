@@ -1,48 +1,45 @@
 'use client'
-
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Button, Image, Card, CardBody, CardFooter } from '@nextui-org/react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  Button,
+  Image,
+  Card,
+  Input,
+  CardBody,
+  CardFooter
+} from '@nextui-org/react'
+import { CarouselCateg } from '@/src/components/carouselCateg'
+import MenuModal from '@/src/components/MenuModal'
 
 const popularItems = [
   {
     id: 1,
-    name: 'Pizza Margarita',
+    name: 'Pizza Americana',
     price: 45,
     image: '/image/margarita.jpg'
   },
   {
     id: 2,
-    name: 'Spaghetti a la Boloñesa',
+    name: 'Pizza Carnivora',
     price: 35,
     image: '/image/bolonesa.webp'
   },
   {
     id: 3,
-    name: 'Pizza Pepperoni',
+    name: 'Pizza Hawaiana',
     price: 50,
     image: '/image/peperoni.webp'
   },
   {
     id: 4,
-    name: 'Lasaña de Carne',
+    name: 'Pizza Primavera',
     price: 55,
     image: '/image/carnes.webp'
   }
 ]
 
-const menuCategories = [
-  { id: 1, name: 'Pizzas', icon: '/pizza-icon.svg' },
-  { id: 2, name: 'Pastas', icon: '/pasta-icon.svg' },
-  { id: 3, name: 'Entradas', icon: '/entradas-icon.svg' },
-  { id: 4, name: 'Postres', icon: '/postres-icon.svg' },
-  { id: 5, name: 'Bebidas', icon: '/bebidas-icon.svg' },
-  { id: 6, name: 'Catering para Eventos', icon: '/catering-icon.svg' },
-  { id: 7, name: 'Ofertas Especiales', icon: '/ofertas-icon.svg' }
-]
-
-function HangingNeonSign() {
+function HangingNeonSign({ onClick, isAuthenticated }) {
   const [isOpen, setIsOpen] = useState(true)
   const [isFlickering, setIsFlickering] = useState(false)
 
@@ -59,7 +56,15 @@ function HangingNeonSign() {
         duration: 0.5
       }}
       className='absolute left-1/2 top-10 z-50 -translate-x-1/2 transform cursor-pointer sm:top-10'
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => {
+        if (isAuthenticated) {
+          setIsOpen(!isOpen)
+          onClick() // Incrementa el contador de clics si está autenticado
+        } else {
+          // alert('Debes iniciar sesión para cambiar el estado del letrero')
+          onClick()
+        }
+      }}
       onHoverStart={() => setIsFlickering(true)}
       onHoverEnd={() => setIsFlickering(false)}
     >
@@ -107,182 +112,202 @@ function HangingNeonSign() {
 }
 
 export default function DashboardPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
+  const [isLoginVisible, setIsLoginVisible] = useState(false) // Controla la visibilidad del login
+  const [isAuthenticated, setIsAuthenticated] = useState(false) // Estado de autenticación
+  const [username, setUsername] = useState<string>('') // Maneja el usuario
+  const [password, setPassword] = useState<string>('') // Maneja la contraseña
+  const [error, setError] = useState<string>('') // Mensaje de error
+  const [clickCount, setClickCount] = useState(0) // Contador de clics
+
+  const users: { [key: string]: string } = {
+    admin: '12345',
+    user: 'password'
+  }
+
+  const handleLogin = () => {
+    if (users[username] && users[username] === password) {
+      setIsLoginVisible(false) // Oculta el login después de iniciar sesión
+      setIsAuthenticated(true) // Marca al usuario como autenticado
+      setError('')
+    } else {
+      setError('Usuario o contraseña incorrectos')
+    }
+  }
+
+  const handleSignClick = () => {
+    setClickCount(prev => prev + 1)
+    if (clickCount + 1 >= 5) {
+      setClickCount(0) // Reinicia el contador
+      setIsLoginVisible(true) // Muestra el formulario de login
+    }
+  }
+
   return (
     <div>
-      {/* Letrero colgante */}
-      <HangingNeonSign />
-
-      <div className='flex flex-col items-center justify-center lg:flex-row'>
-        <section className='flex flex-col items-center justify-center px-4 py-8 lg:ml-12'>
-          <div>
-            <h1 className='text-center text-5xl font-extrabold leading-tight sm:text-7xl'>
-              Bienvenid@ a <br />
-              <span className='bg-span-bg bg-clip-text text-transparent'>
-                Urban Bite
-              </span>
-              <p className='text-xl sm:text-lg'>
-                ¡La mejor experiencia en sabores italianos!
-              </p>
-            </h1>
-            <div className='my-4 px-6 text-center text-lg text-text-secondary sm:text-base'>
-              Disfruta de nuestras auténticas pastas artesanales, pizzas de
-              primer nivel y servicio de catering para tus eventos.
-            </div>
-            <div className='mt-4 flex flex-col gap-4 sm:flex-row sm:justify-center'>
-              <a href='/menu'>
-                <Button
-                  color='default'
-                  radius='full'
-                  size='md'
-                  className='w-full text-sm sm:w-auto'
-                >
-                  Ver Menú
-                </Button>
-              </a>
-              <a href='/contacto'>
-                <Button
-                  radius='full'
-                  size='md'
-                  color='secondary'
-                  className='w-full text-sm sm:w-auto'
-                >
-                  Contáctanos para eventos
-                </Button>
-              </a>
-            </div>
+      {isLoginVisible ? (
+        <div className='flex h-screen flex-col items-center justify-center'>
+          <div className='w-96 rounded bg-white p-6 shadow-lg'>
+            <h2 className='mb-4 text-center text-2xl font-bold'>
+              Iniciar Sesión
+            </h2>
+            <input
+              type='text'
+              placeholder='Usuario'
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              className='mb-4 w-full rounded border p-2'
+            />
+            <input
+              type='password'
+              placeholder='Contraseña'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              className='mb-4 w-full rounded border p-2'
+            />
+            <button
+              onClick={handleLogin}
+              className='w-full rounded bg-blue-500 p-2 text-white hover:bg-blue-600'
+            >
+              Iniciar Sesión
+            </button>
+            {error && <p className='mt-4 text-red-500'>{error}</p>}
           </div>
-        </section>
-
-        <div className='hidden p-3 lg:ml-5 lg:block lg:w-3/4'>
-          <Image
-            src={'/image/pizza.png'}
-            alt='Imagen de pizza deliciosa'
-            width={350}
-            height={350}
-            className='rounded-lg'
+        </div>
+      ) : (
+        <>
+          <HangingNeonSign
+            onClick={handleSignClick}
+            isAuthenticated={isAuthenticated}
           />
-        </div>
-      </div>
-
-      <div className='container mx-auto px-4 py-6'>
-        {/* Popular New Items Section */}
-        <section className='mb-10'>
-          <h2 className='mb-6 text-center text-2xl font-bold sm:text-xl'>
-            Productos Populares
-          </h2>
-          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-            {popularItems.map(item => (
-              <Card key={item.id} className='w-full'>
-                <CardBody className='p-0'>
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    className='aspect-square w-full object-cover'
-                  />
-                </CardBody>
-                <CardFooter className='flex flex-col items-start'>
-                  <h3 className='mb-1 text-lg font-medium sm:text-base'>
-                    {item.name}
-                  </h3>
-                  <div className='flex w-full items-center justify-between'>
-                    <span className='text-sm font-bold'>{item.price} Bs.</span>
-                    <Button color='danger' size='sm'>
-                      Ver Detalles
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Menu Categories Section */}
-        <section>
-          <h2 className='mb-6 text-center text-2xl font-bold sm:text-xl'>
-            Categorías
-          </h2>
-          <div className='relative'>
-            <div className='flex items-center justify-center gap-2 overflow-x-auto py-4'>
-              {menuCategories.map(category => (
-                <Button
-                  key={category.id}
-                  color='primary'
-                  variant='flat'
-                  className='flex h-auto min-w-[80px] flex-col items-center py-1 sm:min-w-[100px]'
-                  aria-pressed='false'
-                >
-                  <Image
-                    src={category.icon}
-                    alt={category.name}
-                    width={40}
-                    height={40}
-                    className='mb-1'
-                  />
-                  <span className='text-center text-sm font-medium'>
-                    {category.name}
+          <div className='flex flex-col items-center justify-center lg:flex-row'>
+            <section className='flex flex-col items-center justify-center px-4 py-8 lg:ml-12'>
+              <div>
+                <h1 className='text-center text-5xl font-extrabold leading-tight sm:text-7xl'>
+                  Bienvenid@ a <br />
+                  <span className='bg-span-bg bg-clip-text text-transparent'>
+                    Urban Bite
                   </span>
-                </Button>
-              ))}
-            </div>
+                  <p className='text-xl sm:text-lg'>
+                    ¡La mejor experiencia en sabores italianos!
+                  </p>
+                </h1>
+                <div className='my-4 px-6 text-center text-lg text-text-secondary sm:text-base'>
+                  Disfruta de nuestras auténticas pastas artesanales, pizzas de
+                  primer nivel y servicio de catering para tus eventos.
+                </div>
+                <div className='mt-4 flex flex-col gap-4 sm:flex-row sm:justify-center'>
+                  {/* <a href='/menu'>
+                    <Button
+                      color='default'
+                      radius='full'
+                      size='md'
+                      className='w-full text-sm sm:w-auto'
+                    >
+                      Ver Menú
+                    </Button>
+                  </a> */}
+                  <Button
+                    color='default'
+                    radius='full'
+                    size='md'
+                    className='w-full text-sm sm:w-auto'
+                    onPress={openModal}
+                  >
+                    Ver Menú
+                  </Button>
+                  <a href='/es/contacto'>
+                    <Button
+                      radius='full'
+                      size='md'
+                      color='secondary'
+                      className='w-full text-sm sm:w-auto'
+                    >
+                      Contáctanos para eventos
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </section>
 
-            {/* Navigation Arrows */}
-            <Button
-              isIconOnly
-              className='absolute left-0 top-1/2 -translate-y-1/2 rounded-full bg-white shadow-lg'
-              aria-label='Previous'
-            >
-              <ChevronLeft className='h-5 w-5' />
-            </Button>
-            <Button
-              isIconOnly
-              className='absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-white shadow-lg'
-              aria-label='Next'
-            >
-              <ChevronRight className='h-5 w-5' />
-            </Button>
-
-            {/* Dots Navigation */}
-            <div className='mt-4 flex justify-center gap-2'>
-              {[...Array(menuCategories.length)].map((_, i) => (
-                <Button
-                  key={i}
-                  isIconOnly
-                  size='sm'
-                  className={`h-2 w-2 min-w-0 rounded-full p-0 ${
-                    i === 1 ? 'bg-warning' : 'bg-default-200'
-                  }`}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
+            <div className='hidden p-3 lg:ml-5 lg:block lg:w-3/4'>
+              <Image
+                src={'/image/pizza.png'}
+                alt='Imagen de pizza deliciosa'
+                width={350}
+                height={350}
+                className='rounded-lg'
+              />
             </div>
           </div>
-        </section>
-      </div>
-      <section className='bg-background-secondary py-20 max-lg:py-10'>
-        <div className='mx-auto grid max-w-screen-lg grid-cols-3 gap-7 px-8 py-5 max-lg:max-w-fit max-lg:grid-cols-1 max-lg:gap-10'>
-          <div className='text-center'>
-            <h2 className='mb-3 text-xl font-semibold'>Frescura</h2>
-            <p className='text-text-secondary max-lg:max-w-[500px]'>
-              Ingredientes frescos y de calidad en cada plato, para una
-              experiencia inolvidable.
-            </p>
+
+          <div className='container mx-auto px-4 py-6'>
+            {/* Popular New Items Section */}
+            <section className='mb-10'>
+              <h2 className='mb-6 text-center text-2xl font-bold sm:text-xl'>
+                Productos Populares
+              </h2>
+              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+                {popularItems.map(item => (
+                  <Card key={item.id} className='w-full'>
+                    <CardBody className='p-0'>
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        className='aspect-square w-full object-cover'
+                      />
+                    </CardBody>
+                    <CardFooter className='flex flex-col items-start'>
+                      <h3 className='mb-1 text-lg font-medium sm:text-base'>
+                        {item.name}
+                      </h3>
+                      <div className='flex w-full items-center justify-between'>
+                        <span className='text-sm font-bold'>
+                          {item.price} Bs.
+                        </span>
+                        <Button color='danger' size='sm'>
+                          Ver Detalles
+                        </Button>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </section>
+            <CarouselCateg />
           </div>
-          <div className='text-center'>
-            <h2 className='mb-3 text-xl font-semibold'>Variedad</h2>
-            <p className='text-text-secondary max-lg:max-w-[500px]'>
-              Desde pastas caseras hasta una selección de masitas y comida para
-              tus eventos.
-            </p>
-          </div>
-          <div className='text-center'>
-            <h2 className='mb-3 text-xl font-semibold'>Calidad</h2>
-            <p className='text-text-secondary max-lg:max-w-[500px]'>
-              Comprometidos con la excelencia, te ofrecemos comida de alta
-              calidad para cada ocasion.
-            </p>
-          </div>
-        </div>
-      </section>
+          <section className='bg-background-secondary py-20 max-lg:py-10'>
+            <div className='mx-auto grid max-w-screen-lg grid-cols-3 gap-7 px-8 py-5 max-lg:max-w-fit max-lg:grid-cols-1 max-lg:gap-10'>
+              <div className='text-center'>
+                <h2 className='mb-3 text-xl font-semibold'>Frescura</h2>
+                <p className='text-text-secondary max-lg:max-w-[500px]'>
+                  Ingredientes frescos y de calidad en cada plato, para una
+                  experiencia inolvidable.
+                </p>
+              </div>
+              <div className='text-center'>
+                <h2 className='mb-3 text-xl font-semibold'>Variedad</h2>
+                <p className='text-text-secondary max-lg:max-w-[500px]'>
+                  Desde pastas caseras hasta una selección de masitas y comida
+                  para tus eventos.
+                </p>
+              </div>
+              <div className='text-center'>
+                <h2 className='mb-3 text-xl font-semibold'>Calidad</h2>
+                <p className='text-text-secondary max-lg:max-w-[500px]'>
+                  Comprometidos con la excelencia, te ofrecemos comida de alta
+                  calidad para cada ocasion.
+                </p>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
+      {/* Modal */}
+      <MenuModal isVisible={isModalOpen} onClose={closeModal} />
     </div>
   )
 }
