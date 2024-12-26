@@ -12,30 +12,53 @@ import {
 import { CarouselCateg } from '@/src/components/carouselCateg'
 import MenuModal from '@/src/components/MenuModal'
 
+import ContactModal from '@/src/components/ContactModal'
+import PrecioCards from '@/src/components/Precios'
+
 const popularItems = [
   {
     id: 1,
     name: 'Pizza Americana',
-    price: 45,
-    image: '/image/margarita.jpg'
+    prices: [
+      { label: 'Personal', value: 12 },
+      { label: 'Mediana', value: 15 },
+      { label: 'Grande', value: 20 },
+      { label: 'Familiar', value: 40 }
+    ],
+    image: '/image/americana2.jpeg'
   },
   {
     id: 2,
-    name: 'Pizza Carnivora',
-    price: 35,
-    image: '/image/bolonesa.webp'
+    name: 'Pizza Hawaiana',
+    prices: [
+      { label: 'Personal', value: 12 },
+      { label: 'Mediana', value: 15 },
+      { label: 'Grande', value: 20 },
+      { label: 'Familiar', value: 40 }
+    ],
+    image: '/image/hawaiana.jpeg'
   },
   {
     id: 3,
-    name: 'Pizza Hawaiana',
-    price: 50,
-    image: '/image/peperoni.webp'
+    name: 'Pizza Lasagna',
+    prices: [
+      { label: 'Personal', value: 12 },
+      { label: 'Mediana', value: 15 },
+      { label: 'Grande', value: 20 },
+      { label: 'Familiar', value: 40 }
+    ],
+    image: '/image/lasagna.png'
   },
   {
     id: 4,
     name: 'Pizza Primavera',
-    price: 55,
-    image: '/image/carnes.webp'
+    prices: [
+      { label: 'Personal', value: 12 },
+      { label: 'Mediana', value: 15 },
+      { label: 'Grande', value: 20 },
+      { label: 'Familiar', value: 40 }
+    ],
+    image: '/image/primavera2.jpeg'
   }
 ]
 
@@ -67,7 +90,6 @@ function HangingNeonSign({
           setIsOpen(!isOpen)
           onClick() // Incrementa el contador de clics si está autenticado
         } else {
-          // alert('Debes iniciar sesión para cambiar el estado del letrero')
           onClick()
         }
       }}
@@ -108,7 +130,9 @@ function HangingNeonSign({
             repeat: isFlickering ? Infinity : 0,
             repeatType: 'reverse'
           }}
-          className={`text-xl font-extrabold tracking-widest sm:text-xl ${isOpen ? 'text-green-100' : 'text-red-100'}`}
+          className={`text-xl font-extrabold tracking-widest sm:text-xl ${
+            isOpen ? 'text-green-100' : 'text-red-100'
+          }`}
         >
           {isOpen ? 'ABIERTO' : 'CERRADO'}
         </motion.h1>
@@ -118,10 +142,16 @@ function HangingNeonSign({
 }
 
 export default function DashboardPage() {
+  // Estado para el primer modal (Menú)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+
+  // Estado para el segundo modal (Contacto para eventos)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const openContactModal = () => setIsContactModalOpen(true)
+  const closeContactModal = () => setIsContactModalOpen(false)
+
   const [isLoginVisible, setIsLoginVisible] = useState(false) // Controla la visibilidad del login
   const [isAuthenticated, setIsAuthenticated] = useState(false) // Estado de autenticación
   const [username, setUsername] = useState<string>('') // Maneja el usuario
@@ -180,6 +210,7 @@ export default function DashboardPage() {
             >
               Iniciar Sesión
             </button>
+
             {error && <p className='mt-4 text-red-500'>{error}</p>}
           </div>
         </div>
@@ -206,16 +237,6 @@ export default function DashboardPage() {
                   primer nivel y servicio de catering para tus eventos.
                 </div>
                 <div className='mt-4 flex flex-col gap-4 sm:flex-row sm:justify-center'>
-                  {/* <a href='/menu'>
-                    <Button
-                      color='default'
-                      radius='full'
-                      size='md'
-                      className='w-full text-sm sm:w-auto'
-                    >
-                      Ver Menú
-                    </Button>
-                  </a> */}
                   <Button
                     color='default'
                     radius='full'
@@ -225,16 +246,17 @@ export default function DashboardPage() {
                   >
                     Ver Menú
                   </Button>
-                  <a href='/es/contacto'>
-                    <Button
-                      radius='full'
-                      size='md'
-                      color='secondary'
-                      className='w-full text-sm sm:w-auto'
-                    >
-                      Contáctanos para eventos
-                    </Button>
-                  </a>
+
+                  {/* Botón que abre el segundo modal de contacto para eventos */}
+                  <Button
+                    radius='full'
+                    size='md'
+                    color='secondary'
+                    className='w-full text-sm sm:w-auto'
+                    onPress={openContactModal}
+                  >
+                    Contáctanos para eventos
+                  </Button>
                 </div>
               </div>
             </section>
@@ -256,27 +278,40 @@ export default function DashboardPage() {
               <h2 className='mb-6 text-center text-2xl font-bold sm:text-xl'>
                 Productos Populares
               </h2>
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+              <div className='grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
                 {popularItems.map(item => (
-                  <Card key={item.id} className='w-full'>
+                  <Card
+                    key={item.id}
+                    className='w-full max-w-sm rounded-lg border border-gray-200 shadow-md transition-shadow hover:shadow-xl'
+                  >
                     <CardBody className='p-0'>
                       <Image
                         src={item.image}
                         alt={item.name}
-                        className='aspect-square w-full object-cover'
+                        className='aspect-square w-full rounded-t-lg object-cover'
                       />
                     </CardBody>
-                    <CardFooter className='flex flex-col items-start'>
-                      <h3 className='mb-1 text-lg font-medium sm:text-base'>
+
+                    <CardFooter className='flex flex-col p-4'>
+                      <h3 className='mb-3 text-xl font-bold text-gray-800 sm:text-lg'>
                         {item.name}
                       </h3>
-                      <div className='flex w-full items-center justify-between'>
-                        <span className='text-sm font-bold'>
-                          {item.price} Bs.
-                        </span>
-                        <Button color='danger' size='sm'>
-                          Ver Detalles
-                        </Button>
+
+                      {/* Sección de precios */}
+                      <div className='grid w-full grid-cols-2 gap-2'>
+                        {item.prices?.map((priceOption, index) => (
+                          <div
+                            key={index}
+                            className='flex flex-col items-center justify-center rounded-lg bg-gray-100 p-2'
+                          >
+                            <span className='text-sm text-gray-500'>
+                              {priceOption.label}
+                            </span>
+                            <span className='text-base font-semibold text-gray-700'>
+                              {priceOption.value} Bs.
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </CardFooter>
                   </Card>
@@ -312,8 +347,15 @@ export default function DashboardPage() {
           </section>
         </>
       )}
-      {/* Modal */}
+
+      {/* Modal del Menú */}
       <MenuModal isVisible={isModalOpen} onClose={closeModal} />
+
+      {/* Modal de Contacto para Eventos */}
+      <ContactModal
+        isVisible={isContactModalOpen}
+        onClose={closeContactModal}
+      />
     </div>
   )
 }

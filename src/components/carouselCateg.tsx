@@ -3,13 +3,12 @@ import { Button, Image } from '@nextui-org/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const menuCategories = [
-  { id: 1, name: 'Pizzas', icon: '/image/carne.jpeg' },
-  { id: 2, name: 'Pastas', icon: '/image/carne.jpeg' },
-  { id: 3, name: 'Entradas', icon: '/entradas-icon.svg' },
-  { id: 4, name: 'Postres', icon: '/postres-icon.svg' },
-  { id: 5, name: 'Bebidas', icon: '/bebidas-icon.svg' },
-  { id: 6, name: 'Catering para Eventos', icon: '/catering-icon.svg' },
-  { id: 7, name: 'Ofertas Especiales', icon: '/ofertas-icon.svg' }
+  { id: 1, name: 'Pizzas', icon: '/image/pizza.jpeg' },
+  { id: 2, name: 'Pastas', icon: '/image/pasta.jpeg' },
+  { id: 3, name: 'Entradas', icon: '/image/entrada.jpeg' },
+  { id: 4, name: 'Postres', icon: '/image/postre.jpeg' },
+  { id: 5, name: 'Bebidas', icon: '/image/bebida.jpeg' },
+  { id: 6, name: 'Catering', icon: '/image/caterin.jpeg' }
 ]
 
 export const CarouselCateg = () => {
@@ -46,8 +45,8 @@ export const CarouselCateg = () => {
 
   return (
     <section>
-      <h2 className='mb-5 text-center text-2xl font-bold sm:text-xl'>
-        Categorías
+      <h2 className='mb-5 text-center text-2xl font-bold text-amber-500 sm:text-xl'>
+        Quizá te puede interesar preguntar por
       </h2>
       <div className='relative'>
         <div className='overflow-hidden'>
@@ -62,15 +61,15 @@ export const CarouselCateg = () => {
                 key={category.id}
                 color='primary'
                 variant='flat'
-                className='flex h-[120px] w-full min-w-[100px] flex-col items-center py-1 sm:min-w-[100px]'
+                className='flex h-[220px] w-full min-w-[190px] flex-col items-center py-1 sm:min-w-[100px]'
                 aria-pressed='false'
                 style={{ flex: `0 0 ${100 / itemsToShow}%` }}
               >
                 <Image
                   src={category.icon}
                   alt={category.name}
-                  width={60}
-                  height={60}
+                  width={180}
+                  height={180}
                   className='mb-1'
                 />
                 <span className='text-center text-sm font-medium'>
