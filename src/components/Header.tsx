@@ -14,7 +14,10 @@ export const Header: FC<Props> = ({ locale }) => {
           <div className='mb-2 h-14 w-14'>
             <LogoIcon />
           </div>
-          <strong className='mx-2 select-none'>Urban Pizza</strong>
+          <strong className='mx-2 select-none'>
+            <span className='block sm:inline'>Urban</span>
+            <span className='block sm:inline'>Pizza</span>
+          </strong>
         </div>
       </Link>
       <div className=' hidden flex-row items-center gap-3 sm:block'>

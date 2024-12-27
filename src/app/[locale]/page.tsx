@@ -76,12 +76,19 @@ function HangingNeonSign({ isAuthenticated }: { isAuthenticated: boolean }) {
         repeatType: 'reverse',
         duration: 0.5
       }}
-      className='absolute left-1/2 top-10 z-50 -translate-x-1/2 transform cursor-pointer sm:top-10'
+      // Ajustamos de left-1/2 a left-[46%]
+      className='
+    absolute
+    left-[46%]
+    top-10
+    z-50
+    -translate-x-1/2
+    transform
+    cursor-pointer
+    sm:top-10
+  '
       onClick={() => {
-        // Si NO está autenticado, no cambia el cartel
         if (!isAuthenticated) return
-
-        // Si está autenticado, alterna abierto/cerrado
         setIsOpen(!isOpen)
       }}
       onHoverStart={() => setIsFlickering(true)}
@@ -90,71 +97,71 @@ function HangingNeonSign({ isAuthenticated }: { isAuthenticated: boolean }) {
       {/* Rope */}
       <div
         className='
-          absolute
-          -top-8
-          left-1/2
-          h-4
-          w-4
-          -translate-x-1/2
-          transform
-          rounded-full
-          border-4
-          border-[#F59707]
-          bg-transparent
-          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
-        '
+      absolute
+      -top-8
+      left-1/2
+      h-4
+      w-4
+      -translate-x-1/2
+      transform
+      rounded-full
+      border-4
+      border-[#F59707]
+      bg-transparent
+      shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+    '
       />
 
-      {/* Neon lines connecting to sign */}
+      {/* Neon lines */}
       <div
         className='
-          absolute
-          left-1/2
-          top-[-28px]
-          h-[20px]
-          w-[2px]
-          origin-top
-          -translate-x-1/2
-          rotate-[-30deg]
-          transform
-          bg-[#F59707]
-          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
-        '
+      absolute
+      left-1/2
+      top-[-28px]
+      h-[20px]
+      w-[2px]
+      origin-top
+      -translate-x-1/2
+      rotate-[-30deg]
+      transform
+      bg-[#F59707]
+      shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+    '
       />
       <div
         className='
-          absolute
-          left-1/2
-          top-[-28px]
-          h-[20px]
-          w-[2px]
-          origin-top
-          -translate-x-1/2
-          rotate-[30deg]
-          transform
-          bg-[#F59707]
-          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
-        '
+      absolute
+      left-1/2
+      top-[-28px]
+      h-[20px]
+      w-[2px]
+      origin-top
+      -translate-x-1/2
+      rotate-[30deg]
+      transform
+      bg-[#F59707]
+      shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+    '
       />
 
       {/* Sign frame */}
       <div
         className='
-          relative
-          flex
-          h-12
-          w-36
-          items-center
-          justify-center
-          rounded-xl
-          border-4
-          border-[#F59707]
-          bg-transparent
-          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
-          backdrop-blur-sm
-          sm:h-12
-          sm:w-36
-        '
+      relative
+      flex
+      h-12
+      w-28
+      items-center
+      justify-center
+      rounded-xl
+      border-4
+      border-[#F59707]
+      bg-transparent
+      shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+      backdrop-blur-sm
+      sm:h-12
+      sm:w-28
+    '
       >
         {/* Neon text */}
         <motion.h1
@@ -163,19 +170,16 @@ function HangingNeonSign({ isAuthenticated }: { isAuthenticated: boolean }) {
             textShadow: isFlickering
               ? isOpen
                 ? [
-                    // ABIERTO - parpadeo con #F59707
                     '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707',
                     '0 0 3px #F59707, 0 0 6px #F59707, 0 0 9px #F59707',
                     '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707'
                   ]
                 : [
-                    // CERRADO - parpadeo con #FF7043
                     '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043',
                     '0 0 3px #FF7043, 0 0 6px #FF7043, 0 0 9px #FF7043',
                     '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043'
                   ]
-              : // Si NO está parpadeando:
-                isOpen
+              : isOpen
                 ? '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707'
                 : '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043'
           }}
@@ -185,12 +189,12 @@ function HangingNeonSign({ isAuthenticated }: { isAuthenticated: boolean }) {
             repeatType: 'reverse'
           }}
           className='
-            text-xl
-            font-extrabold
-            tracking-widest
-            text-white
-            sm:text-xl
-          '
+        text-lg
+        font-extrabold
+        tracking-widest
+        text-white
+        sm:text-lg
+      '
         >
           {isOpen ? 'ABIERTO' : 'CERRADO'}
         </motion.h1>
