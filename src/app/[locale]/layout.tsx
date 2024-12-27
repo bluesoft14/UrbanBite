@@ -47,7 +47,7 @@ export default function RootLayout({
           enableSystem
           attribute='class'
           defaultTheme='urban'
-          themes={['light', 'food', 'instagram', 'facebook']}
+          themes={['food']}
         >
           <NextIntlClientProvider
             locale={locale}

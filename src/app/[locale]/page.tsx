@@ -11,9 +11,7 @@ import {
 } from '@nextui-org/react'
 import { CarouselCateg } from '@/src/components/carouselCateg'
 import MenuModal from '@/src/components/MenuModal'
-
 import ContactModal from '@/src/components/ContactModal'
-import PrecioCards from '@/src/components/Precios'
 
 const popularItems = [
   {
@@ -62,13 +60,7 @@ const popularItems = [
   }
 ]
 
-function HangingNeonSign({
-  onClick,
-  isAuthenticated
-}: {
-  onClick: () => void
-  isAuthenticated: boolean
-}) {
+function HangingNeonSign({ isAuthenticated }: { isAuthenticated: boolean }) {
   const [isOpen, setIsOpen] = useState(true)
   const [isFlickering, setIsFlickering] = useState(false)
 
@@ -86,25 +78,84 @@ function HangingNeonSign({
       }}
       className='absolute left-1/2 top-10 z-50 -translate-x-1/2 transform cursor-pointer sm:top-10'
       onClick={() => {
-        if (isAuthenticated) {
-          setIsOpen(!isOpen)
-          onClick() // Incrementa el contador de clics si está autenticado
-        } else {
-          onClick()
-        }
+        // Si NO está autenticado, no cambia el cartel
+        if (!isAuthenticated) return
+
+        // Si está autenticado, alterna abierto/cerrado
+        setIsOpen(!isOpen)
       }}
       onHoverStart={() => setIsFlickering(true)}
       onHoverEnd={() => setIsFlickering(false)}
     >
       {/* Rope */}
-      <div className='absolute -top-8 left-1/2 h-4 w-4 -translate-x-1/2 transform rounded-full border-4 border-[#0C88AB] bg-transparent shadow-[0_0_10px_#0ff,0_0_20px_#0ff,0_0_30px_#0ff]' />
+      <div
+        className='
+          absolute
+          -top-8
+          left-1/2
+          h-4
+          w-4
+          -translate-x-1/2
+          transform
+          rounded-full
+          border-4
+          border-[#F59707]
+          bg-transparent
+          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+        '
+      />
 
       {/* Neon lines connecting to sign */}
-      <div className='absolute left-1/2 top-[-28px] h-[20px] w-[2px] origin-top -translate-x-1/2 rotate-[-30deg] transform bg-[#0C88AB] shadow-[0_0_10px_#0ff,0_0_20px_#0ff,0_0_30px_#0ff]' />
-      <div className='absolute left-1/2 top-[-28px] h-[20px] w-[2px] origin-top -translate-x-1/2 rotate-[30deg] transform bg-[#0C88AB] shadow-[0_0_10px_#0ff,0_0_20px_#0ff,0_0_30px_#0ff]' />
+      <div
+        className='
+          absolute
+          left-1/2
+          top-[-28px]
+          h-[20px]
+          w-[2px]
+          origin-top
+          -translate-x-1/2
+          rotate-[-30deg]
+          transform
+          bg-[#F59707]
+          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+        '
+      />
+      <div
+        className='
+          absolute
+          left-1/2
+          top-[-28px]
+          h-[20px]
+          w-[2px]
+          origin-top
+          -translate-x-1/2
+          rotate-[30deg]
+          transform
+          bg-[#F59707]
+          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+        '
+      />
 
       {/* Sign frame */}
-      <div className='relative flex h-16 w-40 items-center justify-center rounded-xl border-4 border-[#0C88AB] bg-transparent shadow-[0_0_10px_#0ff,0_0_20px_#0ff,0_0_30px_#0ff] backdrop-blur-sm sm:h-12 sm:w-32'>
+      <div
+        className='
+          relative
+          flex
+          h-12
+          w-36
+          items-center
+          justify-center
+          rounded-xl
+          border-4
+          border-[#F59707]
+          bg-transparent
+          shadow-[0_0_10px_#F59707,0_0_20px_#F59707,0_0_30px_#F59707]
+          backdrop-blur-sm
+          sm:h-12
+          sm:w-36
+        '
+      >
         {/* Neon text */}
         <motion.h1
           animate={{
@@ -112,27 +163,34 @@ function HangingNeonSign({
             textShadow: isFlickering
               ? isOpen
                 ? [
-                    '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00',
-                    '0 0 3px #00ff00, 0 0 6px #00ff00, 0 0 9px #00ff00',
-                    '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00'
+                    // ABIERTO - parpadeo con #F59707
+                    '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707',
+                    '0 0 3px #F59707, 0 0 6px #F59707, 0 0 9px #F59707',
+                    '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707'
                   ]
                 : [
-                    '0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000',
-                    '0 0 3px #ff0000, 0 0 6px #ff0000, 0 0 9px #ff0000',
-                    '0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000'
+                    // CERRADO - parpadeo con #FF7043
+                    '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043',
+                    '0 0 3px #FF7043, 0 0 6px #FF7043, 0 0 9px #FF7043',
+                    '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043'
                   ]
-              : isOpen
-                ? '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00'
-                : '0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000'
+              : // Si NO está parpadeando:
+                isOpen
+                ? '0 0 5px #F59707, 0 0 10px #F59707, 0 0 15px #F59707'
+                : '0 0 5px #FF7043, 0 0 10px #FF7043, 0 0 15px #FF7043'
           }}
           transition={{
             duration: 0.5,
             repeat: isFlickering ? Infinity : 0,
             repeatType: 'reverse'
           }}
-          className={`text-xl font-extrabold tracking-widest sm:text-xl ${
-            isOpen ? 'text-green-100' : 'text-red-100'
-          }`}
+          className='
+            text-xl
+            font-extrabold
+            tracking-widest
+            text-white
+            sm:text-xl
+          '
         >
           {isOpen ? 'ABIERTO' : 'CERRADO'}
         </motion.h1>
@@ -142,23 +200,23 @@ function HangingNeonSign({
 }
 
 export default function DashboardPage() {
-  // Estado para el primer modal (Menú)
+  // Estado para los modales
   const [isModalOpen, setIsModalOpen] = useState(false)
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  // Estado para el segundo modal (Contacto para eventos)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const openContactModal = () => setIsContactModalOpen(true)
   const closeContactModal = () => setIsContactModalOpen(false)
 
-  const [isLoginVisible, setIsLoginVisible] = useState(false) // Controla la visibilidad del login
-  const [isAuthenticated, setIsAuthenticated] = useState(false) // Estado de autenticación
-  const [username, setUsername] = useState<string>('') // Maneja el usuario
-  const [password, setPassword] = useState<string>('') // Maneja la contraseña
-  const [error, setError] = useState<string>('') // Mensaje de error
-  const [clickCount, setClickCount] = useState(0) // Contador de clics
+  // Estado de autenticación y login
+  const [isLoginVisible, setIsLoginVisible] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
+  // Usuarios de prueba
   const users: { [key: string]: string } = {
     admin: '12345',
     user: 'password'
@@ -166,70 +224,154 @@ export default function DashboardPage() {
 
   const handleLogin = () => {
     if (users[username] && users[username] === password) {
-      setIsLoginVisible(false) // Oculta el login después de iniciar sesión
-      setIsAuthenticated(true) // Marca al usuario como autenticado
+      setIsLoginVisible(false)
+      setIsAuthenticated(true)
       setError('')
     } else {
       setError('Usuario o contraseña incorrectos')
     }
   }
 
-  const handleSignClick = () => {
-    setClickCount(prev => prev + 1)
-    if (clickCount + 1 >= 5) {
-      setClickCount(0) // Reinicia el contador
-      setIsLoginVisible(true) // Muestra el formulario de login
-    }
-  }
-
   return (
     <div>
+      {/* Botón sutil de Login en la esquina superior derecha (o donde desees) */}
+      {!isAuthenticated && !isLoginVisible && (
+        <button
+          onClick={() => setIsLoginVisible(true)}
+          className='absolute right-4 top-10       rounded bg-transparent px-3 py-1 text-xs font-semibold hover:text-gray-700 md:right-32 lg:right-36
+    '
+        >
+          Login
+        </button>
+      )}
+
       {isLoginVisible ? (
-        <div className='flex h-screen flex-col items-center justify-center'>
-          <div className='w-96 rounded bg-white p-6 shadow-lg'>
-            <h2 className='mb-4 text-center text-2xl font-bold'>
+        <div className='flex h-full flex-col items-center justify-center px-4 pt-20 sm:px-0'>
+          <div className='w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-xl'>
+            <h2 className='text-center text-3xl font-bold text-gray-800'>
               Iniciar Sesión
             </h2>
-            <input
-              type='text'
-              placeholder='Usuario'
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              className='mb-4 w-full rounded border p-2'
-            />
-            <input
-              type='password'
-              placeholder='Contraseña'
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className='mb-4 w-full rounded border p-2'
-            />
-            <button
-              onClick={handleLogin}
-              className='w-full rounded bg-blue-500 p-2 text-white hover:bg-blue-600'
-            >
-              Iniciar Sesión
-            </button>
+            <p className='mt-1 text-center text-sm text-gray-500'>
+              ¡Bienvenido de nuevo!
+            </p>
 
-            {error && <p className='mt-4 text-red-500'>{error}</p>}
+            {/* Input usuario */}
+            <div className='mt-6'>
+              <label className='mb-1 block text-sm font-semibold text-gray-700'>
+                Usuario
+              </label>
+              <input
+                type='text'
+                placeholder='Ingrese su usuario'
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                className='
+          w-full
+          rounded-lg
+          border
+          border-gray-300
+          p-2
+          text-sm
+          focus:border-blue-500
+          focus:outline-none
+        '
+              />
+            </div>
+
+            {/* Input contraseña */}
+            <div className='mt-4'>
+              <label className='mb-1 block text-sm font-semibold text-gray-700'>
+                Contraseña
+              </label>
+              <input
+                type='password'
+                placeholder='Ingrese su contraseña'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className='
+          w-full
+          rounded-lg
+          border
+          border-gray-300
+          p-2
+          text-sm
+          focus:border-blue-500
+          focus:outline-none
+        '
+              />
+            </div>
+
+            {/* Botones de Acción */}
+            <div className='mt-6 flex flex-col gap-3 sm:flex-row'>
+              <button
+                onClick={handleLogin}
+                className='
+          flex-1
+          rounded-lg
+          bg-blue-500
+          px-4
+          py-2
+          text-sm
+          font-semibold
+          text-white
+          transition-colors
+          duration-300
+          hover:bg-blue-600
+          focus:outline-none
+          focus:ring-2
+          focus:ring-blue-300
+        '
+              >
+                Iniciar Sesión
+              </button>
+
+              {/* Botón Volver */}
+              <button
+                onClick={() => setIsLoginVisible(false)}
+                className='
+          flex-1
+          rounded-lg
+          border
+          border-gray-300
+          px-4
+          py-2
+          text-sm
+          font-semibold
+          text-gray-700
+          hover:bg-gray-100
+          focus:outline-none
+          focus:ring-2
+          focus:ring-gray-200
+        '
+              >
+                Volver
+              </button>
+            </div>
+
+            {/* Mensaje de error */}
+            {error && (
+              <p className='mt-4 text-center text-sm text-red-500'>{error}</p>
+            )}
           </div>
         </div>
       ) : (
         <>
-          <HangingNeonSign
-            onClick={handleSignClick}
-            isAuthenticated={isAuthenticated}
-          />
+          {/* Cartel principal */}
+          <HangingNeonSign isAuthenticated={isAuthenticated} />
+
           <div className='flex flex-col items-center justify-center lg:flex-row'>
             <section className='flex flex-col items-center justify-center px-4 py-8 lg:ml-12'>
               <div>
-                <h1 className='text-center text-5xl font-extrabold leading-tight sm:text-7xl'>
-                  Bienvenid@ a <br />
+                <h1 className='text-center text-4xl font-extrabold leading-tight sm:text-6xl'>
                   <span className='bg-span-bg bg-clip-text text-transparent'>
                     Urban Bite
                   </span>
-                  <p className='text-xl sm:text-lg'>
-                    ¡La mejor experiencia en sabores italianos!
+                  <br />
+                  <p className='text-3xl sm:text-5xl'>
+                    El Arte del Sabor Urbano
+                  </p>
+                  <p className='pt-6 text-xl sm:text-lg'>
+                    ¡La mejor experiencia en sabores!
                   </p>
                 </h1>
                 <div className='my-4 px-6 text-center text-lg text-text-secondary sm:text-base'>
@@ -273,7 +415,7 @@ export default function DashboardPage() {
           </div>
 
           <div className='container mx-auto px-4 py-6'>
-            {/* Popular New Items Section */}
+            {/* Productos Populares */}
             <section className='mb-10'>
               <h2 className='mb-6 text-center text-2xl font-bold sm:text-xl'>
                 Productos Populares
@@ -296,18 +438,16 @@ export default function DashboardPage() {
                       <h3 className='mb-3 text-xl font-bold text-gray-800 sm:text-lg'>
                         {item.name}
                       </h3>
-
-                      {/* Sección de precios */}
                       <div className='grid w-full grid-cols-2 gap-2'>
                         {item.prices?.map((priceOption, index) => (
                           <div
                             key={index}
                             className='flex flex-col items-center justify-center rounded-lg bg-gray-100 p-2'
                           >
-                            <span className='text-sm text-gray-500'>
+                            <span className='text-xs text-gray-500'>
                               {priceOption.label}
                             </span>
-                            <span className='text-base font-semibold text-gray-700'>
+                            <span className='text-sm font-semibold text-gray-700'>
                               {priceOption.value} Bs.
                             </span>
                           </div>
@@ -320,6 +460,7 @@ export default function DashboardPage() {
             </section>
             <CarouselCateg />
           </div>
+
           <section className='bg-background-secondary py-20 max-lg:py-10'>
             <div className='mx-auto grid max-w-screen-lg grid-cols-3 gap-7 px-8 py-5 max-lg:max-w-fit max-lg:grid-cols-1 max-lg:gap-10'>
               <div className='text-center'>
