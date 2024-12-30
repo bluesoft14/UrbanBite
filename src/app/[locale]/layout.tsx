@@ -23,8 +23,8 @@ const space_grotesk = Space_Grotesk({
   variable: '--font-space-grotesk'
 })
 export const metadata: Metadata = {
-  title: 'Next Temp',
-  description: 'create next app By Yahya Parvar!'
+  title: 'Urban Bite',
+  description: 'Página principal de Urban Bite'
 }
 
 export default function RootLayout({
