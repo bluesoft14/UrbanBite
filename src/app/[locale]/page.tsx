@@ -489,6 +489,19 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
+            <div className='mt-10 flex justify-center'>
+              <p
+                className='cursor-pointer text-xs italic text-gray-500 transition duration-300 hover:bg-gradient-to-r hover:from-red-500 hover:to-yellow-500 hover:bg-clip-text hover:text-transparent'
+                onClick={() =>
+                  window.open(
+                    'https://www.facebook.com/profile.php?id=61562618167540',
+                    '_blank'
+                  )
+                }
+              >
+                Desarrollado por <span className='font-semibold'>WAVI P.</span>
+              </p>
+            </div>
           </section>
         </>
       )}
